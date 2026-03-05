@@ -21,11 +21,12 @@ class Maze:
         self.__win = win
         self.__cells = []
         self.__create_cells()
+        self.__break_entrance_and_exit()
 
     def __create_cells(self):
         # create a num_cols x num_rows sized 2D array of Cell objects
 
-        self.__cells = [[Cell(self.__win)] * self.__num_rows] * self.__num_cols
+        self.__cells = [[Cell(self.__win) for _ in range(self.__num_rows)] for _ in range(self.__num_cols)]
 
         for i in range(len(self.__cells)):
             for j in range(len(self.__cells[0])):
@@ -42,4 +43,12 @@ class Maze:
     def __animate(self):
         if self.__win != None:
             self.__win.redraw()
-            sleep(0.05)
+            sleep(0.01)
+
+    def __break_entrance_and_exit(self):
+        last_col = self.__num_cols - 1
+        last_row = self.__num_rows - 1
+        self.__cells[0][0].has_top_wall = False
+        self.__draw_cell(0,0)
+        self.__cells[last_col][last_row].has_bottom_wall = False
+        self.__draw_cell(last_col, last_row)
